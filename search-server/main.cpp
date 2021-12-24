@@ -6,6 +6,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <numeric>
 #include <Windows.h>
 
 using namespace std;
@@ -80,14 +81,11 @@ public:
             });
     }
 
-    // FindTopDocuments для одного аргумента
     vector<Document> FindTopDocuments(const string& raw_query) const {
         return FindTopDocuments(raw_query, DocumentStatus::ACTUAL);
     };
 
-    // FindTopDocuments принимающая статус документа
     vector<Document> FindTopDocuments(const string& raw_query, DocumentStatus status) const {
-        // Лямбда по статусу
         auto status_lambda = [status](int document_id, DocumentStatus status_, int rating) {
             return status_ == status;
         };
@@ -97,6 +95,7 @@ public:
     template <typename Predicate>
     vector<Document> FindTopDocuments(const string& raw_query,
         Predicate predicate) const {
+
         const Query query = ParseQuery(raw_query);
         auto matched_documents = FindAllDocuments(query, predicate);
 
@@ -170,10 +169,7 @@ private:
         if (ratings.empty()) {
             return 0;
         }
-        int rating_sum = 0;
-        for (const int rating : ratings) {
-            rating_sum += rating;
-        }
+        int rating_sum = accumulate(ratings.begin(), ratings.end(), 0);
         return rating_sum / static_cast<int>(ratings.size());
     }
 
