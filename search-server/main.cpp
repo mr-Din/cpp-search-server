@@ -626,10 +626,10 @@ void TestDocumentRelevance() {
 
     const auto found_documents = server.FindTopDocuments(query);
 
-    ASSERT(abs(found_documents[0].relevance - 0.317128) < 1e-6);
-    ASSERT(abs(found_documents[1].relevance - 0.317128) < 1e-6);
-    ASSERT(abs(found_documents[2].relevance - 0.245207) < 1e-6);
-    ASSERT(abs(found_documents[3].relevance - 0.196166) < 1e-6);
+    ASSERT(abs(found_documents[0].relevance - 0.317128) < EPSILON);
+    ASSERT(abs(found_documents[1].relevance - 0.317128) < EPSILON);
+    ASSERT(abs(found_documents[2].relevance - 0.245207) < EPSILON);
+    ASSERT(abs(found_documents[3].relevance - 0.196166) < EPSILON);
 }
 
 // Функция TestSearchServer является точкой входа для запуска тестов
