@@ -5,7 +5,7 @@
 class RequestQueue {
 public:
     explicit RequestQueue(const SearchServer& search_server);
-    // сделаем "обертки" для всех методов поиска, чтобы сохранять результаты для нашей статистики
+    
     template <typename DocumentPredicate>
     vector<Document> AddFindRequest(const string& raw_query, DocumentPredicate document_predicate);
     vector<Document> AddFindRequest(const string& raw_query, DocumentStatus status);
