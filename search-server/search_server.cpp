@@ -14,10 +14,10 @@ void SearchServer::AddDocument(int document_id, const string& document, Document
 	const double inv_word_count = 1.0 / words.size();
 	for (const string& word : words) {
 		word_to_document_freqs_[word][document_id] += inv_word_count;
-		word_frequencies_[document_id][word] += inv_word_count;
+		document_to_word_freqs_[document_id][word] += inv_word_count;
 	}
 	documents_.emplace(document_id, DocumentData{ ComputeAverageRating(ratings), status });
-	document_ids_.push_back(document_id);
+	document_ids_.insert(document_id);
 }
 
 
@@ -35,18 +35,19 @@ int SearchServer::GetDocumentCount() const {
 	return documents_.size();
 }
 
-vector<int>::const_iterator SearchServer::begin() const {
+set<int>::const_iterator SearchServer::begin() const {
 	return document_ids_.begin();
 }
 
-vector<int>::const_iterator SearchServer::end() const {
+set<int>::const_iterator SearchServer::end() const {
 	return document_ids_.end();
 }
 
 const map<string, double>& SearchServer::GetWordFrequencies(int document_id) const {
 	static const map<string, double> word_freq_empty;
-	if (count(document_ids_.begin(), document_ids_.end(), document_id)) {
-		return word_frequencies_.at(document_id);
+	//if (count(document_ids_.begin(), document_ids_.end(), document_id)) {
+	if (document_ids_.count(document_id)) {
+		return document_to_word_freqs_.at(document_id);
 	}
 	else {
 		return word_freq_empty;
@@ -55,9 +56,14 @@ const map<string, double>& SearchServer::GetWordFrequencies(int document_id) con
 }
 
 void SearchServer::RemoveDocument(int document_id) {
-	if (documents_.find(document_id) != documents_.end()) {
-		documents_.erase(document_id);
-		document_ids_.erase(find(document_ids_.begin(), document_ids_.end(), document_id));
+	if (document_ids_.count(document_id) == 0) {
+		return;
+	}
+	documents_.erase(document_id);
+	document_ids_.erase(document_id);
+	document_to_word_freqs_.erase(document_id);
+	for (auto & [_, ids_freqs] : word_to_document_freqs_) {
+		ids_freqs.erase(document_id);
 	}
 }
 

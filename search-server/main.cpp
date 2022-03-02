@@ -39,4 +39,6 @@ int main()
         RemoveDuplicates(search_server);
         cout << "After duplicates removed: "s << search_server.GetDocumentCount() << endl;
 
+        search_server.RemoveDocument(10);
+
 }
