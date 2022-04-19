@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 
-
 struct Document {
     Document();
     Document(int id, double relevance, int rating);
