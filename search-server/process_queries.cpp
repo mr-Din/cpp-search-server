@@ -11,7 +11,7 @@ std::vector<std::vector<Document>> ProcessQueries(
     std::transform(std::execution::par,
         queries.begin(), queries.end(),
         res.begin(),
-        [&search_server](string const& query) {return search_server.FindTopDocuments(query);});
+        [&search_server](std::string const& query) {return search_server.FindTopDocuments(query);});
     return res;
 }
 

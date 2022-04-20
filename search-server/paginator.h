@@ -50,7 +50,7 @@ public:
         return pages_.size();
     }
 private:
-    vector<IteratorRange<It>> pages_;
+    std::vector<IteratorRange<It>> pages_;
 };
 
 template <typename Container>
@@ -59,7 +59,7 @@ auto Paginate(const Container& c, size_t page_size) {
 }
 
 template <typename It>
-ostream& operator << (ostream& output, IteratorRange<It> it) {
+std::ostream& operator << (std::ostream& output, IteratorRange<It> it) {
     for (auto iter = it.begin(); iter != it.end(); iter++) {
         output << *iter;
     }

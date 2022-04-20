@@ -1,5 +1,7 @@
 #include "search_server.h"
 
+using namespace std;
+
 SearchServer::SearchServer(string_view stop_words_text)
 	: SearchServer(SplitIntoWords(stop_words_text))  // Invoke delegating constructor from string container
 {
@@ -37,30 +39,6 @@ vector<Document> SearchServer::FindTopDocuments(string_view raw_query, DocumentS
 
 vector<Document> SearchServer::FindTopDocuments(string_view raw_query) const {
 	return FindTopDocuments(execution::seq, raw_query, DocumentStatus::ACTUAL);
-}
-
-vector<Document> SearchServer::FindTopDocuments(const execution::sequenced_policy&, string_view raw_query, DocumentStatus status) const
-{
-	return FindTopDocuments(raw_query, [status](int document_id, DocumentStatus document_status, int rating) {
-		return document_status == status;
-		});
-}
-
-vector<Document> SearchServer::FindTopDocuments(const execution::sequenced_policy&, string_view raw_query) const
-{
-	return FindTopDocuments(raw_query, DocumentStatus::ACTUAL);
-}
-
-vector<Document> SearchServer::FindTopDocuments(const execution::parallel_policy&, string_view raw_query, DocumentStatus status) const
-{
-	return FindTopDocuments(execution::par, raw_query, [status](int document_id, DocumentStatus document_status, int rating) {
-		return document_status == status;
-		});
-}
-
-vector<Document> SearchServer::FindTopDocuments(const execution::parallel_policy&, string_view raw_query) const
-{
-	return FindTopDocuments(execution::par, raw_query, DocumentStatus::ACTUAL);
 }
 
 int SearchServer::GetDocumentCount() const {

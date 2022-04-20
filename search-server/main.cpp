@@ -10,6 +10,7 @@
 #include <numeric>
 #include <list>
 
+using namespace std;
 
 string GenerateWord(mt19937& generator, int max_length) {
     const int length = uniform_int_distribution(1, max_length)(generator);

@@ -1,8 +1,7 @@
 #include "string_processing.h"
-using namespace std;
 
-vector<string_view> SplitIntoWords(string_view str) {
-    vector<string_view> words;
+std::vector<std::string_view> SplitIntoWords(std::string_view str) {
+    std::vector<std::string_view> words;
     str.substr();
     const int64_t pos_end = str.npos;
     while (true) {

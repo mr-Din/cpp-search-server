@@ -6,12 +6,12 @@ RequestQueue::RequestQueue(const SearchServer& search_server)
 	, current_time_(0) {
 }
 
-vector<Document> RequestQueue::AddFindRequest(const string& raw_query, DocumentStatus status) {
+std::vector<Document> RequestQueue::AddFindRequest(const std::string& raw_query, DocumentStatus status) {
 	const auto result = search_server_.FindTopDocuments(raw_query, status);
 	AddRequest(result.size());
 	return result;
 }
-vector<Document> RequestQueue::AddFindRequest(const string& raw_query) {
+std::vector<Document> RequestQueue::AddFindRequest(const std::string& raw_query) {
 	const auto result = search_server_.FindTopDocuments(raw_query);
 	AddRequest(result.size());
 	return result;
